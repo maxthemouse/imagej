@@ -14,21 +14,21 @@ macro "Normalize Image" {
 	do16bit = Dialog.getCheckbox();
 
 	// open files
-	image = File.openDialog("Image");
-	open(image);
-	rename("image");
-	//image = File.name;
-	image = "image";
-	flat = File.openDialog("Flat Image");
-	open(flat);
-	rename("flat");
-	//flat = File.name;
-	flat = "flat";
 	dark = File.openDialog("Dark Image");
 	open(dark);
 	rename("dark");
 	//dark = File.name;
 	dark = "dark";
+	flat = File.openDialog("Flat Image");
+	open(flat);
+	rename("flat");
+	//flat = File.name;
+	flat = "flat";
+	image = File.openDialog("Image");
+	open(image);
+	rename("image");
+	//image = File.name;
+	image = "image";
 
 	// normalize data, rename results to more friendly names
 	imageCalculator("Subtract create 32-bit", image, dark);
