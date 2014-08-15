@@ -10,7 +10,7 @@ To install these files create a BMIT folder under the plugins sub-folder. Copy t
 
 normalize_one.ijm: This macro is used for narmalizing one image. The input is an image, dark-field image and flat-field image. Options ar to take the negative logrithm to get absorption units and 16 bit output.
 
-Micro-CT-Processing_V2.1.ijm: This was originally writeen by David Cooper. I have made some modifications. This macro is for making background corrections for a CT collection. Input are directories with CT projections, dark-field images and flat-field images. There is input for scaling needed for conversion to 16 bit images. Optionally a Sky Scan log file can be generated. This is needed in order to use the Nrecon program for the reconstruction. Defaults are provided based on typical BMIT parameters. Some parameters such as pixel size will need to be adjusted. The macro assumes 180 degree scan and must be adjusted if a 360 degree scan was used.
+Micro-CT-Processing_V2.1.ijm: This was originally writen by David Cooper. I have made some modifications. This macro is for making background corrections for a CT collection. Input are directories with CT projections, dark-field images and flat-field images. There is input for scaling needed for conversion to 16 bit images. Optionally a Sky Scan log file can be generated. This is needed in order to use the Nrecon program for the reconstruction. Defaults are provided based on typical BMIT parameters. Some parameters such as pixel size will need to be adjusted. The macro assumes 180 degree scan and must be adjusted if a 360 degree scan was used.
 
 Jython
 ------
