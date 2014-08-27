@@ -2,9 +2,8 @@ import os
 
 def run():
     srcDir = DirectoryChooser("Choose Directory").getDirectory()
-    #srcDir = 'E:\\data\\18-5993-Tracy-Walker\\fish\\part1'
     if not srcDir:
-        # user canceled dialog
+        # user cancelled dialog
         return
     for root, directories, filenames in os.walk(srcDir):
         for dir in directories:

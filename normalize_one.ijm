@@ -1,3 +1,6 @@
+//Macro for normalizing a single image using dark and flat images.
+// Authors: M. Adam Webb
+
 macro "Normalize Image" {
 
 	// this macro does a normalization

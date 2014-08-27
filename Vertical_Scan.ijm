@@ -14,12 +14,12 @@ pixelsize=pixelsize*0.001;                                                      
                                                                   //////////////////////////Label each view;
 setBatchMode(true);
 //////////////////////////////////////////////////////////////////////////Projections processing;
-open(pathflatimage);                                                                                     
+open(pathflatimage);
 singecolumnsize=getHeight();
 singlerowsize=getWidth();
 rename("flatimage");
 
-open(pathdarkimage);                                                                                  
+open(pathdarkimage);
 rename("darkimage");
 
 imageCalculator("Subtrac createt", "flatimage","darkimage");
@@ -31,7 +31,7 @@ Imgcount=lengthOf(Imglist);
 
       for (i=0; i<Imgcount; i++) {                                                                         /////////loop for loading the individual files from the selected folder;
 	Singleimgpath = Imgdir+Imglist[i];
-	open(Singleimgpath);	
+	open(Singleimgpath);
 	imageCalculator("Subtract", Imglist[i],"darkimage");
 	imageCalculator("Divide create 32-bit", Imglist[i],"Correctedflat");
             rename("correctedproj_"+i);
@@ -45,13 +45,13 @@ setBatchMode(false);
 
 if(pixelsize==0){                                                    /////// No scales needed
 exit();
-}                                        
+}
 
 setColor(65535);
  if(pixelsize<0.012){                                             //////Change Font size based on difference detectors
-     setFont("SansSerif", 48, "bold");      
+     setFont("SansSerif", 48, "bold");
   }else {
-      setFont("SansSerif", 24, "bold");  
+      setFont("SansSerif", 24, "bold");
    }
        for(i=1; i<=Imgcount; i++){//loop for labeling each projection
          drawString("View "+i, singlerowsize-150, singecolumnsize*i);
@@ -60,7 +60,7 @@ setColor(65535);
 ////////////////////Draw scales (unit is mm);
 columnpixels=getHeight();
 rowpixels=getWidth();
- 
+
 i=0;                                                                               //////////minimum increment of the unit;
 ix2=0;
 pixelnum=0;                                                                  //////This is pixel numbers;
@@ -77,11 +77,11 @@ drawString("mm",160, columnpixels);
              drawLine(20, vposition, 100, vposition);
              drawString(unitmark,105, vposition);
              unitmark=unitmark+1;
-             }  
+             }
          if (ix2==ix2integer){
              drawLine(20, vposition, 70, vposition);
-             } else { 
-                drawLine(20, vposition, 50, vposition);     
+             } else {
+                drawLine(20, vposition, 50, vposition);
              }
           i=0.1*a;
           ix2=i*2;
@@ -91,5 +91,5 @@ drawString("mm",160, columnpixels);
           vposition=columnpixels-pixelnum;
      }                                                                                      //end loop
 
-drawLine(20, columnpixels, 20, vposition);     
+drawLine(20, columnpixels, 20, vposition);
 }                                                                                           //end macro

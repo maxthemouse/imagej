@@ -1,4 +1,4 @@
-// This macro performs dark and flat field corrections on CT projection files.  
+// This macro performs dark and flat field corrections on CT projection files.
 // Authors: David Cooper, M. Adam Webb
 
 macro"SR Micro-CT Correction"{
@@ -40,13 +40,13 @@ run("Input/Output...", "jpeg=75 gif=-1 file=.txt save copy_row save_column save_
 
 setBatchMode(true);
 
-////////////////////////////////////////////////////////////Dark 
+////////////////////////////////////////////////////////////Dark
     Darkdir = getDirectory("Choose DarkField Directory ");
     Darklist = getFileList(Darkdir);
     setOption("display labels", true);
     Darkpath = Darkdir+Darklist[0];
     DarkOpenpath="open=["+Darkpath+"]";
-    DarkFileCount=lengthOf(Darklist);    
+    DarkFileCount=lengthOf(Darklist);
 
 run("Image Sequence...", DarkOpenpath+" number="+DarkFileCount+" starting=1 increment=1 scale=100 file=[] or=[] sort");
 rename("Raw Dark Fields");
@@ -65,7 +65,7 @@ close();
     Flatpath = Flatdir+Flatlist[0];
     FlatOpenpath="open=["+Flatpath+"]";
     FlatFileCount=lengthOf(Flatlist);
-    
+
 
 run("Image Sequence...", FlatOpenpath+" number="+FlatFileCount+" starting=1 increment=1 scale=100 file=[] or=[] sort");
 
@@ -113,7 +113,7 @@ Dialog.addCheckbox("Projection at 180 degrees", true);
 
 
 Dialog.show();
-Prefix=Dialog.getString(); 
+Prefix=Dialog.getString();
 Stackmax=Dialog.getNumber();
 Stackmin=Dialog.getNumber();
 LogFile=Dialog.getCheckbox();
@@ -125,7 +125,7 @@ Proj180=Dialog.getCheckbox();
 
 
 if(LogFile==true){
-	
+
 TestFilePath = Datadir+Datalist[0];
 open(TestFilePath);
 getDimensions(width, height, channels, slices, frames);
@@ -145,7 +145,7 @@ if (Proj180) {
 
 
 Dialog.create("Log File Parameters");
-Dialog.addMessage("Assumes 180 degree rotation"); 
+Dialog.addMessage("Assumes 180 degree rotation");
 Dialog.addString("Scanner", Scanner);
 Dialog.addNumber("Optical Axis/Mid Slice", OpticalAxis);
 Dialog.addNumber("Detector-source Distance (mm)", 26000);
@@ -161,13 +161,13 @@ Dialog.addNumber("Rotation Step (degrees)", RotationStep);
 
 Dialog.show();
 Scanner=Dialog.getString();
-OpticalAxis=Dialog.getNumber(); 
-ObjectSourceDistance=Dialog.getNumber(); 
-ProjectionNumber=Dialog.getNumber(); 
+OpticalAxis=Dialog.getNumber();
+ObjectSourceDistance=Dialog.getNumber();
+ProjectionNumber=Dialog.getNumber();
 RowNumber=Dialog.getNumber();
 ColumnNumber=Dialog.getNumber();
 PixelSize=Dialog.getNumber();
-//ExposureTime=Dialog.getNumber(); ////not necessary 
+//ExposureTime=Dialog.getNumber(); ////not necessary
 RotationStep=Dialog.getNumber();
 
 
@@ -195,7 +195,7 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
  for (i=0; i<DataFileCount; i++) {  /////////loop for loading the individual files from the selected folder
 	SingleFilePath = Datadir+Datalist[i];
 	open(SingleFilePath);
-	
+
 	imageCalculator("Subtract", Datalist[i],"Average Dark Field");
 	imageCalculator("Divide create 32-bit", Datalist[i],"Dark Corrected Average Flat Field");
 
@@ -209,7 +209,7 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 		}
 
 	///determine indexing number //max of 10,000 projections in this version....
-	
+
 	if (NewIndex>=0 && NewIndex<10){
 	IndexNumber="000"+NewIndex;
 	}
@@ -224,11 +224,11 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 	}
 
 
-	SaveName=Prefix+"_"+IndexNumber;	
+	SaveName=Prefix+"_"+IndexNumber;
 	SavePathFile=Savepath+"\\"+SaveName;   //+".tif";
 	saveAs("Tiff", SavePathFile);
 
-	//saveAs("Tiff", Savepath+"\\"+Datalist[i]);	
+	//saveAs("Tiff", Savepath+"\\"+Datalist[i]);
 	close();
 
 
@@ -243,7 +243,7 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 
 
 
-	
+
 }//end macro
 
 
