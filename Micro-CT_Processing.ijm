@@ -4,7 +4,21 @@
 macro"SR Micro-CT Correction"{
     requires("1.43n");
 
-
+// pad to 4 digits
+function pad(num) {
+	lead = "";
+	if (num < 1000) {
+		lead = "0";
+	}
+	if (num < 100) {
+		lead = "00";
+	}
+	if (num < 10) {
+		lead = "000";
+	}
+	text = lead+num;
+	return text;
+}
 
 //////////////////////Global Variable Defaults
 
@@ -48,8 +62,21 @@ setBatchMode(true);
     DarkOpenpath="open=["+Darkpath+"]";
     DarkFileCount=lengthOf(Darklist);
 
-run("Image Sequence...", DarkOpenpath+" number="+DarkFileCount+" starting=1 increment=1 scale=100 file=[] or=[] sort");
-rename("Raw Dark Fields");
+// run("Image Sequence...", DarkOpenpath+" number="+DarkFileCount+" starting=1 increment=1 scale=100 file=[] or=[] sort");
+
+// load one at a time to get around bug in sequence loading for 12 bit files
+
+NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
+
+ for (i=0; i<DarkFileCount; i++) {  /////////loop for loading the individual files from the selected folder
+	SingleFilePath = Darkdir+Darklist[i];
+	open(SingleFilePath);
+	rename("Temp_Dark_" + pad(i));
+	}//end for loop
+	
+run("Images to Stack", "name=[Raw Dark Fields] title=[Temp_Dark_] use");
+	
+// rename("Raw Dark Fields");
 
 run("Z Project...", "start=1 stop="+DarkFileCount+" projection=[Average Intensity]");
 rename("Average Dark Field");
@@ -67,11 +94,21 @@ close();
     FlatFileCount=lengthOf(Flatlist);
 
 
-run("Image Sequence...", FlatOpenpath+" number="+FlatFileCount+" starting=1 increment=1 scale=100 file=[] or=[] sort");
+// run("Image Sequence...", FlatOpenpath+" number="+FlatFileCount+" starting=1 increment=1 scale=100 file=[] or=[] sort");
 
-rename("Raw Flat Fields");
+// load one at a time to get around bug in sequence loading for 12 bit files
 
+NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 
+ for (i=0; i<FlatFileCount; i++) {  /////////loop for loading the individual files from the selected folder
+	SingleFilePath = Flatdir+Flatlist[i];
+	open(SingleFilePath);
+	rename("Temp_Flat_" + pad(i));
+	}//end for loop
+	
+run("Images to Stack", "name=[Raw Flat Fields] title=[Temp_Flat_] use");
+
+// rename("Raw Flat Fields");
 
 run("Z Project...", "start=1 stop="+FlatFileCount+" projection=[Average Intensity]");
 rename("Average Flat Field");
@@ -192,14 +229,15 @@ File.saveString(LogFileString, LogFilePath)
 
 start = getTime();
 
-NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
+NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN, max of 10,000 projections in this version....
 
  for (i=0; i<DataFileCount; i++) {  /////////loop for loading the individual files from the selected folder
 	SingleFilePath = Datadir+Datalist[i];
 	open(SingleFilePath);
+	rename("Current Image");
 
-	imageCalculator("Subtract", Datalist[i],"Average Dark Field");
-	imageCalculator("Divide create 32-bit", Datalist[i],"Dark Corrected Average Flat Field");
+//	imageCalculator("Subtract", "Current Image","Average Dark Field");
+	imageCalculator("Divide create 32-bit", "Current Image","Dark Corrected Average Flat Field");
 
 
 	setMinAndMax(Stackmin, Stackmax);
@@ -210,31 +248,14 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 		NewIndex=NewIndex+1;
 		}
 
-	///determine indexing number //max of 10,000 projections in this version....
-
-	if (NewIndex>=0 && NewIndex<10){
-	IndexNumber="000"+NewIndex;
-	}
-	if (NewIndex>=10 && NewIndex<100){
-	IndexNumber="00"+NewIndex;
-	}
-	if (NewIndex>=100 && NewIndex<1000){
-	IndexNumber="0"+NewIndex;
-	}
-	if (NewIndex>=1000 && NewIndex<10000){
-	IndexNumber=NewIndex;
-	}
-
-
-	SaveName=Prefix+"_"+IndexNumber;
-	SavePathFile=Savepath+"\\"+SaveName;   //+".tif";
+	SavePathFile=Savepath+"\\"+Prefix+"_"+pad(NewIndex);   //+".tif";
 	saveAs("Tiff", SavePathFile);
 
 	//saveAs("Tiff", Savepath+"\\"+Datalist[i]);
 	close();
 
 
-	selectWindow(Datalist[i]);
+	selectWindow("Current Image");
 	close();
 
 	showProgress(i/DataFileCount);
