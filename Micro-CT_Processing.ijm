@@ -190,6 +190,8 @@ File.saveString(LogFileString, LogFilePath)
 
 ///////////////////////////////////////////////////correction
 
+start = getTime();
+
 NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 
  for (i=0; i<DataFileCount; i++) {  /////////loop for loading the individual files from the selected folder
@@ -240,6 +242,9 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 
 }//end for loop
 
+end = getTime();
+timeDiff = (end - start) / 1000;
+showStatus("Processed " + DataFileCount + " files in " + timeDiff + " seconds");
 
 
 
