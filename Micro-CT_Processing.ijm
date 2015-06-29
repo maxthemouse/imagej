@@ -127,6 +127,7 @@ close();
 
     Datadir = getDirectory("Choose Data Projections Directory ");
     Datalist = getFileList(Datadir);
+	Datalist = Array.sort(Datalist);
     setOption("display labels", true);
     Datapath = Datadir+Datalist[0];
     DataOpenpath="open=["+Datapath+"]";
