@@ -1,5 +1,5 @@
 //Macro for stitch 360 scan results to 180 projections used for PITRE or XTRACT.
-macro "360stitch180PR, ver2.0" {
+macro "360stitch180PR, ver2.1" {//Correct one error in version 2.0, 2015-10-20
 
 Dialog.create("Before runing this macro:"); 
 Dialog.addMessage("1. Make sure you already have four folders (Dark, Flat, Tomo, Stitching) with images;");
@@ -9,6 +9,7 @@ Dialog.addMessage(" ");
 Dialog.addNumber("Total number of projections:", 6000);
 Dialog.show(); 
 nproj = Dialog.getNumber()/2;
+nproj2 = nproj+1;
 
 rawdatadir=getDirectory("Choose Raw Data Directory"); 
 darkpath=rawdatadir+"\\Dark";
@@ -78,7 +79,7 @@ makeRectangle(cropcollumnpixels, croprowpixels, finalwidth, finalheight);
 run("Crop");
 rename("1");
 run("Flip Horizontally", "stack");
-run("Image Sequence...", "open=tomopath number=nproj starting=3001 sort");
+run("Image Sequence...", "open=tomopath number=nproj starting=nproj2 sort");
 makeRectangle(cropcollumnpixels, 0, finalwidth, finalheight);
 run("Crop");
 rename("2");
