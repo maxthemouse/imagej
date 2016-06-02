@@ -237,7 +237,7 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 	open(SingleFilePath);
 	rename("Current Image");
 
-//	imageCalculator("Subtract", "Current Image","Average Dark Field");
+	imageCalculator("Subtract", "Current Image","Average Dark Field");
 	imageCalculator("Divide create 32-bit", "Current Image","Dark Corrected Average Flat Field");
 
 
