@@ -17,9 +17,9 @@ function bkg_subtract(imp1, imp2, imp3) {
 }
 
 // zero fill a number to the number of digits
-function zfill(number, size, char) {
-	var pad_char = typeof char !== 'undefined' ? char : '0';
+function zfill(number, size, pad) {
+  var pad = typeof pad !== "undefined" ? pad : "0";
   number = number.toString();
-  while (number.length < size) number = pad_char + number;
+  while (number.length < size) number = pad + number;
   return number;
 }
