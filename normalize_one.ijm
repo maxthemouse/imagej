@@ -35,11 +35,12 @@ macro "Normalize Image" {
 
 	// normalize data, rename results to more friendly names
 	imageCalculator("Subtract create 32-bit", image, dark);
-	rename("Image_minus_Dark")
+	rename("Image_minus_Dark");
 	imageCalculator("Subtract create 32-bit", flat, dark);
-	rename("Flat_minus_Dark")
+	rename("Flat_minus_Dark");
 	imageCalculator("Divide create 32-bit", "Image_minus_Dark", "Flat_minus_Dark");
-	rename("Image_norm")
+	rename("Image_norm");
+	run("Remove NaNs...", "radius=2");
 
 	// take the -log to get an absorption image when selected
 	if (dolog) {

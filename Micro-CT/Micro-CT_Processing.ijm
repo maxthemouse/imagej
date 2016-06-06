@@ -52,7 +52,7 @@ run("Input/Output...", "jpeg=75 gif=-1 file=.txt save copy_row save_column save_
 
 
 
-setBatchMode(true);
+setBatchMode(false);
 
 ////////////////////////////////////////////////////////////Dark
     Darkdir = getDirectory("Choose DarkField Directory ");
@@ -117,7 +117,7 @@ rename("Average Flat Field");
 selectWindow("Raw Flat Fields");
 close();
 
-imageCalculator("Subtract create", "Average Flat Field","Average Dark Field");
+imageCalculator("Subtract create 32-bit", "Average Flat Field","Average Dark Field");
 rename("Dark Corrected Average Flat Field");
 
 selectWindow("Average Flat Field");
@@ -237,8 +237,10 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 	open(SingleFilePath);
 	rename("Current Image");
 
-	imageCalculator("Subtract", "Current Image","Average Dark Field");
-	imageCalculator("Divide create 32-bit", "Current Image","Dark Corrected Average Flat Field");
+	imageCalculator("Subtract create 32-bit", "Current Image","Average Dark Field");
+	rename("Dark Corrected Image");
+	imageCalculator("Divide create 32-bit", "Dark Corrected Image","Dark Corrected Average Flat Field");
+	run("Remove NaNs...", "radius=2");
 
 
 	setMinAndMax(Stackmin, Stackmax);
@@ -257,6 +259,8 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 
 
 	selectWindow("Current Image");
+	close();
+	selectWindow("Dark Corrected Image");
 	close();
 
 	showProgress(i/DataFileCount);
