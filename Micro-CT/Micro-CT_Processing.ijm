@@ -20,6 +20,34 @@ function pad(num) {
 	return text;
 }
 
+// pad to 8 digits
+function pad8(num) {
+	lead = "";
+  if (num < 10000000) {
+		lead = "0";
+	}
+  if (num < 1000000) {
+		lead = "00";
+	}
+  if (num < 100000) {
+		lead = "000";
+	}
+  if (num < 10000) {
+		lead = "0000";
+	}
+	if (num < 1000) {
+		lead = "00000";
+	}
+	if (num < 100) {
+		lead = "000000";
+	}
+	if (num < 10) {
+		lead = "0000000";
+	}
+	text = lead+num;
+	return text;
+}
+
 //////////////////////Global Variable Defaults
 
 
@@ -52,7 +80,7 @@ run("Input/Output...", "jpeg=75 gif=-1 file=.txt save copy_row save_column save_
 
 
 
-setBatchMode(false);
+setBatchMode(true);
 
 ////////////////////////////////////////////////////////////Dark
     Darkdir = getDirectory("Choose DarkField Directory ");
@@ -73,9 +101,9 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 	open(SingleFilePath);
 	rename("Temp_Dark_" + pad(i));
 	}//end for loop
-	
+
 run("Images to Stack", "name=[Raw Dark Fields] title=[Temp_Dark_] use");
-	
+
 // rename("Raw Dark Fields");
 
 run("Z Project...", "start=1 stop="+DarkFileCount+" projection=[Average Intensity]");
@@ -105,7 +133,7 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 	open(SingleFilePath);
 	rename("Temp_Flat_" + pad(i));
 	}//end for loop
-	
+
 run("Images to Stack", "name=[Raw Flat Fields] title=[Temp_Flat_] use");
 
 // rename("Raw Flat Fields");
@@ -230,7 +258,7 @@ File.saveString(LogFileString, LogFilePath)
 
 start = getTime();
 
-NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN, max of 10,000 projections in this version....
+NewIndex=0;
 
  for (i=0; i<DataFileCount; i++) {  /////////loop for loading the individual files from the selected folder
 	SingleFilePath = Datadir+Datalist[i];
@@ -251,7 +279,11 @@ NewIndex=0;////renumbering index to reduce to 4 numerical characters for SKYSCAN
 		NewIndex=NewIndex+1;
 		}
 
-	SavePathFile=Savepath+"\\"+Prefix+"_"+pad(NewIndex);   //+".tif";
+  if (ProjectionNumber < 10000) {
+  SavePathFile=Savepath+"\\"+Prefix+"_"+pad(NewIndex);   //+".tif";
+  } else {
+  SavePathFile=Savepath+"\\"+Prefix+"_"+pad8(NewIndex);   //+".tif";
+  }
 	saveAs("Tiff", SavePathFile);
 
 	//saveAs("Tiff", Savepath+"\\"+Datalist[i]);
@@ -281,5 +313,3 @@ showStatus("Processed " + DataFileCount + " files in " + timeDiff + " seconds");
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
