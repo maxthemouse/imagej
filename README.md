@@ -3,6 +3,8 @@ Readme
 
 This project consists of a group of loosely connected scripts. They are developed at BMIT at the Canadian Light Source [link](http://www.lightsource.ca/). They are used with ImageJ or with Fiji. The details are listed below.
 
+A lot of image processing related to CT has now been moved away from ImagJ to Python scripts and [UFO-KIT](https://github.com/ufo-kit). A number of these macros have become obsolete and are no longer beeing developed. 
+
 Macros
 ------
 
