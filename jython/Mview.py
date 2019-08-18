@@ -92,6 +92,7 @@ def rename(basename, seq, fd=None, path1=None, path2=None, Nview=1):
     if fd is None:
         fd = []
     files = glob.glob(os.path.join(path1, "%s*" % basename))
+    files = [f in files if os.path.splitext(f) == '.tif' or s.path.splitext(f) == '.tiff']
     if len(files) != len(seq):
         return ("Error: Wrong sequence. Files = %d vs sequence = %d." %
                 (len(files), len(seq)))
